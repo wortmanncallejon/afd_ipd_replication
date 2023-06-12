@@ -6,7 +6,7 @@
 #   
 #   CODE AUTHOR: Felix Wortmann Callejón
 #
-#   DATE: JUNE, 11th 2023
+#   DATE: JUNE, 12th 2023
 #
 ############################################################
 
@@ -27,6 +27,10 @@ raw <- read_sav(here("Import", "Data.sav")) %>%
   filter(Filter_Sample1 == 1)
 
 VBD <- read_sav(here("Import", "VBD.sav"))
+
+dpi = 600
+width = 16
+height = 9
 
 # INTRODUCTION ----
 
@@ -1027,15 +1031,15 @@ ests <- filter(mutate(broom::tidy(original_spec), df = original_spec[["df.residu
 
 ests %>% 
   mutate(term = factor("Duartion party membership"),
-         spec = factor(case_when(spec == "Lucke" ~ "Lucke-Adam-Petry",
-                                 spec == "Meuthen" ~ "Meuthen-Petry",
-                                 spec == "Transition" ~ "Transition",
-                                 spec == "Original" ~ "Original Specification\n without Dummies"),
-                       levels = rev(c("Original Specification\n without Dummies", "Transition", "Lucke-Adam-Petry", "Meuthen-Petry")))) %>%
+         spec = factor(case_when(spec == "Lucke" ~ "Coded with\npre-2015 members",
+                                 spec == "Meuthen" ~ "Coded with\npost-2015 members",
+                                 spec == "Transition" ~ "Coded as\nown category",
+                                 spec == "Original" ~ "Original Specification\n without dummies"),
+                       levels = rev(c("Original Specification\n without dummies", "Coded as\nown category", "Coded with\npre-2015 members", "Coded with\npost-2015 members")))) %>%
   ggplot(aes(estimate, spec, xmin = conf.low, xmax = conf.high, label = p.label)) +
   geom_vline(xintercept = 1, linetype = "dashed") +
   scale_y_discrete("Coding of members that entered 2015") +
-  scale_x_continuous("Est. marginal effect of duration of party membership on nomination preference in ORs") +
+  scale_x_continuous("Est. marginal effect of party membership duration on IPD preference in ORs") +
   geom_pointrange() +
   geom_text(vjust = -1, family = "CMSS", size = 3) +
   theme_light() +
