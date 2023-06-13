@@ -6,7 +6,7 @@
 #   
 #   CODE AUTHOR: Felix Wortmann Callejón
 #
-#   DATE: JUNE, 12th 2023
+#   DATE: JUNE, 13th 2023
 #
 ############################################################
 
@@ -374,7 +374,7 @@ ests <- ests %>%
          afd = factor(ifelse(party == "AfD",1,0)))
 
 ests %>% 
-  filter(term %in% c("Trust in democracy", "Satisfaction with parliament", "Duration party membership")) %>% 
+  #filter(term %in% c("Trust in democracy", "Satisfaction with parliament", "Duration party membership")) %>% 
   ggplot(aes(estimate, party, xmin = conf.low, xmax = conf.high, label = p.label, color = party, size = afd, linewidth = as.numeric(afd))) +
   scale_color_grey(start = 0.8, end = 0.2) +
   geom_vline(xintercept = 1, linetype = "dashed") +
@@ -382,12 +382,15 @@ ests %>%
   scale_linewidth(range = c(0.5,1)) +
   geom_vline(xintercept = 1, linetype = "dashed") +
   scale_y_discrete(NULL) +
-  scale_x_continuous("Estimated marginal effect on nomination preference in odds ratios") +
+  scale_x_continuous("Estimated marginal effect on nomination preference in ORs") +
   geom_pointrange() +
-  geom_text(vjust = -1, size = 3) +
+  #geom_text(vjust = -1, size = 3) +
   theme_light() +
   theme(legend.position = "none") +
   facet_wrap(~term, scales = "free_x")
+
+ggsave(here("Export","Paper", "fig4.pdf"), device = "pdf", width = 16, height = 9, units = "cm")
+
 
 ## Figure 5 ----
 
@@ -525,7 +528,7 @@ raw %>%
   scale_fill_grey(NULL, start = 0.5, end = 0.8) +
   scale_x_discrete(NULL) +
   geom_col(position = position_dodge(0.9)) +
-  geom_text(position = position_dodge(0.9), family = "CMSS", size = 4, vjust = -0.3) +
+  geom_text(position = position_dodge(0.9), size = 4, vjust = -0.3) +
   theme_light() +
   theme(legend.position = "bottom",
         panel.grid.major.x = element_blank())
@@ -985,8 +988,7 @@ predicted_probs %>%
   guides(alpha = "none", color = "none") +
   facet_wrap(~indep_var,
              scales = "free") +
-  theme_light() +
-  theme(text = element_text(family = "CMSS"))
+  theme_light()
 
 
 
@@ -1038,12 +1040,13 @@ ests %>%
                        levels = rev(c("Original Specification\n without dummies", "Coded as\nown category", "Coded with\npre-2015 members", "Coded with\npost-2015 members")))) %>%
   ggplot(aes(estimate, spec, xmin = conf.low, xmax = conf.high, label = p.label)) +
   geom_vline(xintercept = 1, linetype = "dashed") +
-  scale_y_discrete("Coding of members that entered 2015") +
+  scale_y_discrete("Coding of members who entered in 2015") +
   scale_x_continuous("Est. marginal effect of party membership duration on IPD preference in ORs") +
   geom_pointrange() +
-  geom_text(vjust = -1, family = "CMSS", size = 3) +
-  theme_light() +
-  theme(text = element_text(family = "CMSS"))
+  geom_text(vjust = -1, size = 3) +
+  theme_light() 
+
+
 
 showtext::showtext_opts(dpi = dpi)
 ggsave(here("Export", "Paper", "Appendix", "figH.pdf"), device = "pdf", width = width, height = height, units = "cm", dpi = dpi)
