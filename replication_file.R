@@ -374,7 +374,6 @@ ests <- ests %>%
          afd = factor(ifelse(party == "AfD",1,0)))
 
 ests %>% 
-  #filter(term %in% c("Trust in democracy", "Satisfaction with parliament", "Duration party membership")) %>% 
   ggplot(aes(estimate, party, xmin = conf.low, xmax = conf.high, label = p.label, color = party, size = afd, linewidth = as.numeric(afd))) +
   scale_color_grey(start = 0.8, end = 0.2) +
   geom_vline(xintercept = 1, linetype = "dashed") +
@@ -384,32 +383,11 @@ ests %>%
   scale_y_discrete(NULL) +
   scale_x_continuous("Estimated marginal effect on nomination preference in ORs") +
   geom_pointrange() +
-  #geom_text(vjust = -1, size = 3) +
   theme_light() +
   theme(legend.position = "none") +
   facet_wrap(~term, scales = "free_x")
 
 ggsave(here("Export","Paper", "fig4.pdf"), device = "pdf", width = 16, height = 9, units = "cm")
-
-
-## Figure 5 ----
-
-ests %>%
-  filter(term %in% c("Monthly hours of party work", "Multivariate distance from party", "Perceived distance from party")) %>% 
-  ggplot(aes(estimate, party, xmin = conf.low, xmax = conf.high, label = p.label, color = party, size = afd, linewidth = as.numeric(afd))) +
-  scale_color_grey(start = 0.8, end = 0.2) +
-  geom_vline(xintercept = 1, linetype = "dashed") +
-  scale_size_manual(values = c(0.5,0.8)) +
-  scale_linewidth(range = c(0.5,1)) +
-  geom_vline(xintercept = 1, linetype = "dashed") +
-  scale_y_discrete(NULL) +
-  scale_x_continuous("Estimated marginal effect on nomination preference in odds ratios") +
-  geom_pointrange() +
-  geom_text(vjust = -1, size = 3) +
-  theme_light() +
-  theme(legend.position = "none") +
-  facet_wrap(~term, scales = "free_x")
-
 
 
 # APPENDIX ----
